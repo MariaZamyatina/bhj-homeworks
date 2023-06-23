@@ -1,43 +1,55 @@
-let sliders = Array.from(document.querySelectorAll('div.slider__item'));
-const next = document.querySelector('div.slider__arrow_next'),
-prev = document.querySelector('div.slider__arrow_prev');
+const sliders = Array.from(document.querySelectorAll('div.slider__item'));
+const next = document.querySelector('div.slider__arrow_next');
+const prev = document.querySelector('div.slider__arrow_prev');
+const dots = Array.from(document.querySelectorAll('div.slider__dot'));
+dots[0].classList.add('slider__dot_active');
 
 function slidersNext() {
-    for (i=0;i<=sliders.length-1;i++) {
-        if (sliders[i].className == 'slider__item slider__item_active') {
+  const fun = (element) => element.className == 'slider__item slider__item_active';
+  const index = sliders.findIndex(fun); 
+  
+  dots[index].classList.remove('slider__dot_active');
+  sliders[index].classList.remove('slider__item_active');
 
-            sliders[i].classList.remove('slider__item_active');
-
-            if (i === sliders.length-1) {
-                i = 0;
-                sliders[i].classList.add('slider__item_active')}
-            else {
-                sliders[i+1].classList.add('slider__item_active')}
-            return;
-        }
-    }
+  (index == sliders.length - 1) ? 
+    (sliders[0].classList.add('slider__item_active'), dots[0].classList.add('slider__dot_active')) : 
+    (sliders[index + 1].classList.add('slider__item_active'), dots[index + 1].classList.add('slider__dot_active'));   
 };
 
 function slidersPrev() {
-    for (i=sliders.length-1;i>=0;i--) {
-        if (sliders[i].className == 'slider__item slider__item_active') {
+  const fun = (element) => element.className == 'slider__item slider__item_active';
+  const index = sliders.findIndex(fun);  
 
-            sliders[i].classList.remove('slider__item_active');
+  sliders[index].classList.remove('slider__item_active');
+  dots[index].classList.remove('slider__dot_active');
 
-            if (i === 0) {
-                i = 4;
-                sliders[i].classList.add('slider__item_active')}
-            else {
-                sliders[i-1].classList.add('slider__item_active')}
-            return;
-        }
-    }
+  (index == 0) ? 
+    (sliders[sliders.length-1].classList.add('slider__item_active'),dots[sliders.length-1].classList.add('slider__dot_active')) :
+     (sliders[index - 1].classList.add('slider__item_active'), dots[index - 1].classList.add('slider__dot_active'));      
 };
 
+function ChangeDot() {
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].onclick = () => {
+      const fun = (el) => el.className == 'slider__dot slider__dot_active';
+      const index = dots.findIndex(fun);
+      const indexNew = i;
+
+      dots[index].classList.remove('slider__dot_active');
+      sliders[index].classList.remove('slider__item_active');
+
+      dots[indexNew].classList.add('slider__dot_active');
+      sliders[indexNew].classList.add('slider__item_active');
+    }
+  }
+};
+
+ChangeDot();
+
 next.onclick = () => {
-    slidersNext();
+  slidersNext();
 };
 
 prev.onclick = () => {
-    slidersPrev();
+  slidersPrev();
 };
