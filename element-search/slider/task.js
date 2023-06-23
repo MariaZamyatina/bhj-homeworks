@@ -28,7 +28,7 @@ function slidersPrev() {
      (sliders[index - 1].classList.add('slider__item_active'), dots[index - 1].classList.add('slider__dot_active'));      
 };
 
-function ChangeDot() {
+function сhangeDot() {
   for (let i = 0; i < dots.length; i++) {
     dots[i].onclick = () => {
       const fun = (el) => el.className == 'slider__dot slider__dot_active';
@@ -44,7 +44,7 @@ function ChangeDot() {
   }
 };
 
-ChangeDot();
+сhangeDot();
 
 next.onclick = () => {
   slidersNext();
