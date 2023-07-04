@@ -30,16 +30,11 @@ class Game {
   registerEvents() {
     let current = this;
     function checkSymbol(event) {  
-      let input = String.fromCharCode(event.keyCode).toLowerCase();;
+      let input = String.fromCharCode(event.keyCode).toLowerCase();
       let symbol = current.currentSymbol.textContent;
-      if (symbol == input) {
-				current.success();
-			}
-      else {
-        current.fail();
+      (symbol == input) ? current.success() : current.fail();
 			};
-    }
-    document.addEventListener("keyup", checkSymbol);   
+      document.addEventListener("keyup", checkSymbol);   
   }  
 
   success() {
