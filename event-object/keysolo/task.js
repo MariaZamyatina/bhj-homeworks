@@ -18,6 +18,15 @@ class Game {
     this.lossElement.textContent = 0;
   }
 
+   /*
+      TODO:
+      Написать обработчик события, который откликается
+      на каждый введённый символ.
+      В случае правильного ввода слова вызываем this.success()
+      При неправильном вводе символа - this.fail();
+      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
+     */
+    
   registerEvents() {
     let current = this;
     function checkSymbol(event) {  
@@ -33,15 +42,6 @@ class Game {
     }
     document.addEventListener("keyup", checkSymbol);   
   }  
-
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
 
   success() {
     if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
