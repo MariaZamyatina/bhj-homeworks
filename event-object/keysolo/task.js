@@ -26,14 +26,13 @@ class Game {
       При неправильном вводе символа - this.fail();
       DOM-элемент текущего символа находится в свойстве this.currentSymbol.
      */
-    
+
   registerEvents() {
     let current = this;
     function checkSymbol(event) {  
       let input = String.fromCharCode(event.keyCode).toLowerCase();;
       let symbol = current.currentSymbol.textContent;
-
-			if (symbol == input) {
+      if (symbol == input) {
 				current.success();
 			}
       else {
