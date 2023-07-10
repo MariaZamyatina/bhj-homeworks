@@ -18,23 +18,7 @@ class Game {
     this.lossElement.textContent = 0;
   }
 
-  registerEvents() {
-    let current = this;
-    function checkSymbol(event) {  
-      let input = String.fromCharCode(event.keyCode).toLowerCase();;
-      let symbol = current.currentSymbol.textContent;
-
-			if (symbol == input) {
-				current.success();
-			}
-      else {
-        current.fail();
-			};
-    }
-    document.addEventListener("keyup", checkSymbol);   
-  }  
-
-    /*
+   /*
       TODO:
       Написать обработчик события, который откликается
       на каждый введённый символ.
@@ -42,6 +26,16 @@ class Game {
       При неправильном вводе символа - this.fail();
       DOM-элемент текущего символа находится в свойстве this.currentSymbol.
      */
+
+  registerEvents() {
+    let current = this;
+    function checkSymbol(event) {  
+      let input = String.fromCharCode(event.keyCode).toLowerCase();
+      let symbol = current.currentSymbol.textContent;
+      (symbol == input) ? current.success() : current.fail();
+			};
+      document.addEventListener("keyup", checkSymbol);   
+  }  
 
   success() {
     if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");

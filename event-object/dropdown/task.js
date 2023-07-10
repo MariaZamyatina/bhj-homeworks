@@ -11,4 +11,4 @@ elClick.onclick = () => {
     elList.classList.remove('dropdown__list_active'); 
     return false; 
     }
-}
+};
