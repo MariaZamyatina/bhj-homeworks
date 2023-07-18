@@ -1,47 +1,50 @@
 //localStorage.clear();
 // если localStorage не пустой//
 // получаем из него необходимые данные
-if (localStorage.getItem('key') != null) {
+(() => {
+  if (localStorage.getItem('key') != null) {
     let dataStorage = JSON.parse(localStorage.getItem("key"));
     addHtml(dataStorage['dict']['key']);
-
+    
     // убираем анимацию
     const id = document.getElementById('loader');
     id.classList.remove('loader_active');
-}
-// если кэш пустой загружаем курс валют
-else {
-  const xhr = new XMLHttpRequest();  
-
-  let coursesArray = [];
-
-  xhr.addEventListener('readystatechange', () => {
-    if (xhr.readyState === xhr.DONE) {
-
-      const id = document.getElementById('loader');
-      id.classList.remove('loader_active');
-
-      const courses = xhr.responseText;
-      const data = JSON.parse(courses);
-      const valute = data['response']['Valute'];
-
-    for (let key of Object.keys(valute)) {
-      const coursesDict = {"CharCode" : "", "Value": ""};  
-      coursesDict['CharCode'] = valute[key]['CharCode'];
-      coursesDict['Value'] = valute[key]['Value'];
-      coursesArray.push(coursesDict);
-      }
-      
-      // добавление курса в html
-      addHtml(coursesArray);
-      addLocalStorage(coursesArray);
-      }
     }
-  );
+  // если кэш пустой загружаем курс валют
+  else {
+    const xhr = new XMLHttpRequest();  
+    
+    let coursesArray = [];
+    
+    xhr.addEventListener('readystatechange', () => {
+      if (xhr.readyState === xhr.DONE) {
+    
+        const id = document.getElementById('loader');
+        id.classList.remove('loader_active');
+    
+        const courses = xhr.responseText;
+        const data = JSON.parse(courses);
+        const valute = data['response']['Valute'];
+    
+      for (let key of Object.keys(valute)) {
+        const coursesDict = {"CharCode" : "", "Value": ""};  
+        coursesDict['CharCode'] = valute[key]['CharCode'];
+        coursesDict['Value'] = valute[key]['Value'];
+        coursesArray.push(coursesDict);
+        }
+          
+        // добавление курса в html
+        addHtml(coursesArray);
+        addLocalStorage(coursesArray);
+        }
+        }
+      );
+    
+      xhr.open('GET','https://students.netoservices.ru/nestjs-backend/slow-get-courses');
+      xhr.send();
+    };
 
-  xhr.open('GET','https://students.netoservices.ru/nestjs-backend/slow-get-courses');
-  xhr.send();
-};
+})();
 
 function addHtml(coursesArray) {       // [ {}, {}, {} ]
     coursesArray.forEach(element => {
