@@ -2,7 +2,7 @@
 // если localStorage не пустой//
 // получаем из него необходимые данные
 (() => {
-  if (localStorage.getItem('key') != null) {
+  if (localStorage.getItem('key')) {
     let dataStorage = JSON.parse(localStorage.getItem("key"));
     addHtml(dataStorage['dict']['key']);
     
@@ -35,7 +35,7 @@
           
         // добавление курса в html
         addHtml(coursesArray);
-        addLocalStorage(coursesArray);
+        updateLocalStorage(coursesArray);
         }
         }
       );
@@ -71,7 +71,7 @@ function addHtml(coursesArray) {       // [ {}, {}, {} ]
     });  
   };
 
-function addLocalStorage(coursesArray) {
+function updateLocalStorage(coursesArray) {
     let dataDict = {'dict' : []}; // словарь для добавления в localstorage  
     let data = {'key': [...coursesArray]};
     dataDict['dict'] = data;
