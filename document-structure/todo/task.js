@@ -1,29 +1,20 @@
-let form = document.querySelector('form');
+const form = document.querySelector('form');
 
 //localStorage.clear();
 // если localStorage не пустой//
 // получаем из него необходимые данные
-if (localStorage.getItem('key') != '') {
+if (localStorage.getItem('key')) {
   let dataStorage = localStorage.getItem('key').split(',');
   for (let i = 0; i <= dataStorage.length - 1; i ++) {
     addHtml(dataStorage[i]); 
   }  
 };
 
-const button = document.getElementById('tasks__add');
-
-button.addEventListener('click', (e) => { 
+form.addEventListener('submit', (e) => {
   e.preventDefault();
-  const value = document.querySelector('input').value; 
-  if (value.trim(' ') == '') return;
+  const value = form.querySelector('input').value;
+  if (value.trim() == '') return;
   addHtml(value); // добавление нового html 
-});
-
-form.addEventListener('keyup', (e) => {  
-  const value = e.target.value;  
-  if (e.key == 'Enter' && value.trim(' ') != '') {
-    addHtml(value); // добавление нового html 
-  }
 });
 
 // добавление нового html 
@@ -50,17 +41,16 @@ function addHtml(value) {
   
   // удаление заметки
   newElement.addEventListener('click', (e) => {
-    if (e.target.className == 'task__remove') {
-      newElement.remove();
-       // изменение в localStorage после удаления заметки
-      addLocalStorage();}
+    newElement.remove();
+    // изменение в localStorage после удаления заметки
+    updateLocalStorage();
 
   });
-  // добавление в localStorage
-  addLocalStorage();
+  // обновление в localStorage
+  updateLocalStorage();
 };
 
-function addLocalStorage() {
+function updateLocalStorage() {
   let data = [];
   let text = Array.from(document.querySelectorAll('.task__title'));
   text.forEach((element) => {
