@@ -1,6 +1,9 @@
 const xhr = new XMLHttpRequest();  
 const xhr2 = new XMLHttpRequest();  
 
+loadPoll();
+sendAnswers();
+
 // функция загрузки опроса
 function loadPoll() {
   xhr.addEventListener('readystatechange', () => {
@@ -16,13 +19,7 @@ function loadPoll() {
 
 xhr.open('GET','https://students.netoservices.ru/nestjs-backend/poll');
 xhr.send();
-
-answerPoll();
-
-};
-
-loadPoll();
-
+}
 
 // функция получения результатов опроса
 function answerPoll() {
@@ -32,7 +29,7 @@ function answerPoll() {
 
     buttons.addEventListener('click', (e) => {
 
-      console.log('кнопка нажата');
+      alert('Спасибо, ваш голос засчитан!');
       resolve(e.target);  
     });
   });
@@ -55,8 +52,6 @@ async function sendAnswers() {
   xhr2.send( `vote=${id}&answer=${element.textContent}` );
 
 };
-
-sendAnswers();
 
 let id = '';
 function addHtml(json) {
@@ -92,6 +87,7 @@ function showResult(json) {
     const div = document.createElement('div');
     const votes = String(element['votes']);
     div.innerHTML +=  `${element['answer']} :  ${votes.bold()} ${'%'.bold()} ` 
+
     //добавляем к родителю
     parent.appendChild(div);
   })
