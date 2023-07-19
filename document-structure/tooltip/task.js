@@ -1,20 +1,28 @@
 document.addEventListener('click', (e) => {       
   const el = e.target;
-  if (el.className === 'has-tooltip') {
+  if (el.className.includes( 'has-tooltip' )) {
     e.preventDefault();
+    // ищем если ли у нажатого элемента активная подсказка - убираем ее
+    const tip = [...el.parentElement.children].filter(elem => elem.className =='tooltip tooltip_active'); 
     const attr = el.getAttribute('title');
-
-    // чтобы была только одна подсказка
-    const tooltips = Array.from(document.querySelectorAll('.tooltip.tooltip_active'));
-
-    const tip = [...el.parentElement.children].filter(c => c.className =='tooltip tooltip_active' && c.textContent == attr); 
-
-    // ограничение на вторую подсказку
-    if (tooltips.length > 0 && tooltips.indexOf(tip[0])<0) return; // выходим если уже есть открытая подсказка
-
-    // смотрим есть ли активная подсказка на нажатом элементе
-    (tip.length == 0) ? createElement(el) : tip[0].remove(); 
-  }
+    
+    if (tip[0] && tip[0].textContent == attr) {
+      tip[0].remove();
+      
+    }
+    // если нет активной подсказки
+    else {
+      // находим элемент с активной подсказкой
+      activeTip = document.querySelector('.tooltip_active');
+      console.log('activeTip',activeTip)
+      // если есть подсказка у другого элемента - удаляем активную подсказку 
+      if (activeTip) {
+        activeTip.remove();
+      };
+      // создаем подсказку у нажатого элементв
+      createElement(el);
+      }
+    }
 });
 
 document.addEventListener('scroll', () => {
