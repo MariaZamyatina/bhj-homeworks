@@ -75,17 +75,34 @@ function addHtml(json) {
 };
 
 function showResult(json) {
+
+
   const stat = json['stat'];
+
   // убираем варианты ответа
   const buttons = Array.from(document.querySelectorAll('button'));
   buttons.forEach((e) => {
    e.parentNode.removeChild(e);
   });
 
+  // публикуем на странице результаты
+  results(stat);
+
+};
+
+function results(arr) {
+
+  let initialValue = 0;
+  // подсчет всего голосов
+  let sumVotes = arr.reduce(function (accumulator, currentValue) {
+    return accumulator + currentValue.votes;
+  }, initialValue);
+
+  // публикуем на странице
   const parent = document.getElementById('poll__answers');
-  stat.forEach((element) => {
+  arr.forEach((element) => {
     const div = document.createElement('div');
-    const votes = String(element['votes']);
+    const votes = String(((element['votes'] / sumVotes ) * 100).toFixed(2));
     div.innerHTML +=  `${element['answer']} :  ${votes.bold()} ${'%'.bold()} ` 
 
     //добавляем к родителю
