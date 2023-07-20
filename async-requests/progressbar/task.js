@@ -1,59 +1,45 @@
-function loadFile() {
+function upload() {
 
   const form = document.forms.form;
+  let value = 0;
+  
+  form.addEventListener('submit', (event) => {
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    event.preventDefault();
 
-    const xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
-    let loaded = 0;
-   
-    let percent = 0;
-
+    // отслеживаем процесс отправки
     xhr.upload.onprogress = function(event) {
 
-      const timerId = setInterval(() => {
-        // console.log(`Отправлено ${event.loaded} из ${event.total} байт`);
-        
-        loaded = loaded + event.loaded;
+      value = (event.loaded / event.total);
+      document.getElementById( 'progress' ).value = value;
 
-        // процент
-        percent = Math.round((event.loaded / event.total) * 100) ;
+      const percent = Math.round(value * 100)
 
-        console.log(`Отправлено ${event.loaded} % из ${event.total} байт`);
-
-        
-
-        if (xhr.status === 201) {
-          
-            console.log('status',xhr.status);
-            clearInterval(timerId);
-          };
-          //         progress.value = 1.0; 
-          //         clearInterval(timerId); 
-      },3000)
-     
+      console.log( `Отправлено ${percent} %` );
     };
 
-    // xhr.addEventListener('readystatechange', () => {
-      
-    //   const progress = document.getElementById( 'progress' );
-    //   let timerId = setInterval(() => {
-    //     if (xhr.readyState === xhr.DONE) {
-    //         progress.value = 1.0; 
-    //         clearInterval(timerId);
-    //     } 
-    //     else progress.value += 0.05;    
-    //    }, 100);
-    // })
-
-    xhr.open('POST','https://students.netoservices.ru/nestjs-backend/upload');
-
+    // смотрим статус отправки
+    xhr.onload = xhr.onerror = function() {
+      if (this.status == 200 || this.status == 201 ) {
+        alert("Файл успешно загружен");
+      };
+      if (this.status == 0)
+        alert(`Ошибка загрузки. Проверьте подключение к интернету`);
+      if (this.status >= 400 && this.status < 500) {                                                                                    
+        alert(`Ошибка загрузки. Проверьте корректность пути к ресурсу и разрешение доступа к нему`);
+      };
+      if (this.status >= 500 && this.status < 500) {
+        alert(`Файл не загружен. Ошибка на стороне сервера`);
+      };
+    };
+  
+    xhr.open("POST", "https://students.netoservices.ru/nestjs-backend/upload");
     let formData = new FormData(form);
+    console.log(formData);
     xhr.send(formData);
+  })
+}
 
-   });
-  };
-
-loadFile();
+upload();
